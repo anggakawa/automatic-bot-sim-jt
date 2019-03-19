@@ -9,7 +9,7 @@ const keyboard = Markup.inlineKeyboard([
   Markup.callbackButton('Delete', 'delete')
 ])
 
-const bot = new Telegraf('838217060:AAGaeMX3K7S_OUfRdLYGzc7kKaE9FSiF2Oc');
+const bot = new Telegraf('daasda');
 
 
 const screenTaker = require('./screen-taker');
