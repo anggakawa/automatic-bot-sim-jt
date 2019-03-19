@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const node_cron = require('cron').CronJob;
 
 const Telegraf = require('telegraf')
@@ -9,8 +11,7 @@ const keyboard = Markup.inlineKeyboard([
   Markup.callbackButton('Delete', 'delete')
 ])
 
-const bot = new Telegraf('daasda');
-
+const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
 const screenTaker = require('./screen-taker');
 
