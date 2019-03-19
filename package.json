@@ -12,6 +12,7 @@
     "cron": "^1.7.0",
     "nightmare": "^3.0.1",
     "node-cron": "^2.0.3",
-    "puppeteer": "^1.13.0"
+    "puppeteer": "^1.13.0",
+    "telegraf": "^3.27.1"
   }
 }

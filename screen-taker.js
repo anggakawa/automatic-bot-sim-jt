@@ -13,10 +13,14 @@ const task = { run: async () => {
   await page.type('#password', 'password');
   await page.click('#submit-form');
   await page.waitForNavigation();
-  await page.goto('http://localhost:8080/#/orders');
-  await page.waitFor(2000);
+  await page.goto('http://localhost:8080/#/orders', {
+    waitUntil: "networkidle0",
+    timeout: 10000,
+  });
+  // await page.waitFor(2000);
   await page.screenshot({
-    path: './ss/' + new Date() + '-ss.png',
+    // path: './ss/' + new Date() + '-ss.png',
+    path: './ss/photo.png',
     fullPage: true
   });
   browser.close();
