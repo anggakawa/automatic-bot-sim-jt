@@ -20,7 +20,7 @@ const task = { run: async () => {
   // await page.waitFor(2000);
   await page.screenshot({
     // path: './ss/' + new Date() + '-ss.png',
-    path: './ss/photo.png',
+    path: '../ss/photo.png',
     fullPage: true
   });
   browser.close();

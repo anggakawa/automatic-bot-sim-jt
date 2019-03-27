@@ -13,7 +13,7 @@ const keyboard = Markup.inlineKeyboard([
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
-const screenTaker = require('./screen-taker');
+const screenTaker = require('./core/screen-taker');
 
 // https://crontab.guru for further preferences
 const job = new node_cron('* * * * *', () => {
