@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 
+// change the url
+
 const task = { run: async () => {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
@@ -19,6 +21,13 @@ const task = { run: async () => {
   });
   // await page.waitFor(2000);
   await page.screenshot({
+    /**
+     * i think we don't need to have multiple photos 
+     * in storage. because the purpose of this program is
+     * just to see the progress at the time and we dont need
+     * to save any progress.
+     * 
+     */
     // path: './ss/' + new Date() + '-ss.png',
     path: '../ss/photo.png',
     fullPage: true
