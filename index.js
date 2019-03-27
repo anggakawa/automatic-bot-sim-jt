@@ -1,6 +1,8 @@
 require('dotenv').config();
 
-const node_cron = require('cron').CronJob;
+const subscriber = require('./core/subscriber');
+const scheduler = require('./core/scheduler');
+const screenTaker = require('./core/screen-taker');
 
 const Telegraf = require('telegraf')
 const Extra = require('telegraf/extra')
@@ -13,28 +15,42 @@ const keyboard = Markup.inlineKeyboard([
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
-const screenTaker = require('./core/screen-taker');
-
-// https://crontab.guru for further preferences
-const job = new node_cron('* * * * *', () => {
-  console.log('cron job run');
-  screenTaker.run().then(() => {
-    bot.telegram.sendPhoto(process.env.USER_ID, {
-      source: './ss/photo.png'
+scheduler.startSchedule('* * * * *', () => {
+  // tambahkan fungsi screen-taker;
+  
+  const subscriberArray = subscriber.getAllSubscriber();
+  subscriberArray.then((data) => {
+    data.forEach(element => {
+      bot.telegram.sendPhoto(element.telegram_id, {
+        source: './ss/photo.png'
+      });
     });
   });
+})
+
+bot.start((ctx) => ctx.reply('Hello'));
+bot.help((ctx) => ctx.reply('help template'));
+bot.command('subscribe', (ctx) => {
+  subscriber.addSubscriber(ctx.message.chat.id).then(() => {
+    ctx.reply('anda telah menjadi subscriber');
+  });
+});
+bot.command('unsubscribe', (ctx) => {
+  subscriber.unsubscribe(ctx.message.chat.id).then(() => {
+    ctx.reply('id anda telah dihapus');
+  })
 });
 
-job.start();
-
-bot.start((ctx) => ctx.reply('Hello'))
-bot.help((ctx) => ctx.reply('Help message'))
-bot.on('message', (ctx) => { 
-  ctx.reply(ctx.from.id);
-  ctx.telegram.sendCopy(ctx.from.id, ctx.message, Extra.markup(keyboard))
-})
-bot.action('delete', ({
-  deleteMessage
-}) => deleteMessage());
+// for development purpose
+// bot.command('send', (ctx) => {
+//   subscriber.getAllSubscriber().then((data) => {
+//     ctx.telegram.sendPhoto(data[0].telegram_id, {
+//       source: './ss/photo.png'
+//     });
+//   })
+// });
+// bot.action('delete', ({
+//   deleteMessage
+// }) => deleteMessage());
 
 bot.launch();
