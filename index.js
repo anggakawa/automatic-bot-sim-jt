@@ -19,7 +19,7 @@ const screenTaker = require('./screen-taker');
 const job = new node_cron('* * * * *', () => {
   console.log('cron job run');
   screenTaker.run().then(() => {
-    bot.telegram.sendPhoto(233167004, {
+    bot.telegram.sendPhoto(process.env.USER_ID, {
       source: './ss/photo.png'
     });
   });
