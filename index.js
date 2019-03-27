@@ -1,3 +1,5 @@
+global.__basedir = __dirname;
+
 require('dotenv').config();
 
 const subscriber = require('./core/subscriber');
@@ -5,27 +7,28 @@ const scheduler = require('./core/scheduler');
 const screenTaker = require('./core/screen-taker');
 
 const Telegraf = require('telegraf')
-const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
-
-const keyboard = Markup.inlineKeyboard([
-  Markup.urlButton('❤️', 'http://telegraf.js.org'),
-  Markup.callbackButton('Delete', 'delete')
-])
 
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
+// ubah waktu scheduler sesuai kebutuhan bisnis
 scheduler.startSchedule('* * * * *', () => {
-  // tambahkan fungsi screen-taker;
-  
-  const subscriberArray = subscriber.getAllSubscriber();
-  subscriberArray.then((data) => {
-    data.forEach(element => {
-      bot.telegram.sendPhoto(element.telegram_id, {
-        source: './ss/photo.png'
+  // check apakah berjalan lancar atau tidak;
+
+  (async function taskRunner(){
+    const getSS = await screenTaker.run();
+    if (getSS) {
+      const subscriberArray = subscriber.getAllSubscriber();
+      subscriberArray.then((data) => {
+        data.forEach(element => {
+          bot.telegram.sendPhoto(element.telegram_id, {
+            source: __dirname + '/ss/photo.png'
+          });
+        });
       });
-    });
-  });
+    }
+  })();
+
 })
 
 bot.start((ctx) => ctx.reply('Hello'));
