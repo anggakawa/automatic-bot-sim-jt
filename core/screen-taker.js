@@ -29,11 +29,12 @@ const task = { run: async () => {
      * 
      */
     // path: './ss/' + new Date() + '-ss.png',
-    path: '../ss/photo.png',
+    path: __basedir + '/ss/photo.png',
     fullPage: true
   });
   browser.close();
-  console.log('screenshot-taken!!!');
+  console.log('screenshot-taken!!! at ' + new Date());
+  return true;
   } 
 };
 
